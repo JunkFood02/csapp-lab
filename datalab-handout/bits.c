@@ -165,7 +165,9 @@ int tmin(void)
  */
 int isTmax(int x)
 {
-  return 2;
+  int temp1=~(x+x+1);
+  int temp2=x^(~x+x);
+  return (!temp1)&!!(temp2);
 }
 /* 
  * allOddBits - return 1 if all odd-numbered bits in word set to 1
@@ -303,4 +305,9 @@ int floatFloat2Int(unsigned uf)
 unsigned floatPower2(int x)
 {
   return 2;
-}
+}/*
+int main()
+{
+  printf("%d\n",(0x7fffffff+1)+(1+0x7fffffff));
+  return 0;
+}*/
