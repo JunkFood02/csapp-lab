@@ -153,7 +153,7 @@ int bitXor(int x, int y)
  */
 int tmin(void)
 {
-  return 1<<31;
+  return 1 << 31;
 }
 //2
 /*
@@ -165,9 +165,9 @@ int tmin(void)
  */
 int isTmax(int x)
 {
-  int temp1=~(x+x+1);
-  int temp2=x^(~x+x);
-  return (!temp1)&!!(temp2);
+  int temp1 = ~(x + x + 1);
+  int temp2 = x ^ (~x + x);
+  return (!temp1) & !!(temp2);
 }
 /* 
  * allOddBits - return 1 if all odd-numbered bits in word set to 1
@@ -179,7 +179,10 @@ int isTmax(int x)
  */
 int allOddBits(int x)
 {
-  return 2;
+  int tmp = ((0xAA << 8) | 0xAA);
+  tmp = tmp << 16 | tmp;
+  int tmp2=(~(tmp&x))&tmp;
+  return !tmp2;
 }
 /* 
  * negate - return -x 
@@ -305,7 +308,7 @@ int floatFloat2Int(unsigned uf)
 unsigned floatPower2(int x)
 {
   return 2;
-}/*
+} /*
 int main()
 {
   printf("%d\n",(0x7fffffff+1)+(1+0x7fffffff));
