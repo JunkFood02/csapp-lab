@@ -181,7 +181,7 @@ int allOddBits(int x)
 {
   int tmp = ((0xAA << 8) | 0xAA);
   tmp = tmp << 16 | tmp;
-  return !((~(tmp&x))&tmp);
+  return !((~(tmp & x)) & tmp);
 }
 /* 
  * negate - return -x 
@@ -192,7 +192,7 @@ int allOddBits(int x)
  */
 int negate(int x)
 {
-  return ~x+1;
+  return ~x + 1;
 }
 //3
 /* 
@@ -206,10 +206,10 @@ int negate(int x)
  */
 int isAsciiDigit(int x)
 {
-  int high=(!(x>>6))&!((x>>4)^3);
-  int low1=!!(x&0x8)&!(x&0x6);
-  int low2=!(x&0x8);
-  return high&(low1|low2);
+  int high = (!(x >> 6)) & !((x >> 4) ^ 3);
+  int eight=!(x & 0x8);
+  int low1 = !eight & !(x & 0x6);
+  return high & (low1 | eight);
 }
 /* 
  * conditional - same as x ? y : z 
@@ -220,7 +220,13 @@ int isAsciiDigit(int x)
  */
 int conditional(int x, int y, int z)
 {
-  return 2;
+  int mask = !!x;
+  mask = mask << 1 | mask;
+  mask = mask << 2 | mask;
+  mask = mask << 4 | mask;
+  mask = mask << 8 | mask;
+  mask = mask << 16 | mask;
+  return (y & mask) | (z & ~mask);
 }
 /* 
  * isLessOrEqual - if x <= y  then return 1, else return 0 
