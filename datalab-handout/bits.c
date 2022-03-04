@@ -181,8 +181,7 @@ int allOddBits(int x)
 {
   int tmp = ((0xAA << 8) | 0xAA);
   tmp = tmp << 16 | tmp;
-  int tmp2=(~(tmp&x))&tmp;
-  return !tmp2;
+  return !((~(tmp&x))&tmp);
 }
 /* 
  * negate - return -x 
@@ -193,7 +192,7 @@ int allOddBits(int x)
  */
 int negate(int x)
 {
-  return 2;
+  return ~x+1;
 }
 //3
 /* 
@@ -207,7 +206,10 @@ int negate(int x)
  */
 int isAsciiDigit(int x)
 {
-  return 2;
+  int high=(!(x>>6))&!((x>>4)^3);
+  int low1=!!(x&0x8)&!(x&0x6);
+  int low2=!(x&0x8);
+  return high&(low1|low2);
 }
 /* 
  * conditional - same as x ? y : z 
