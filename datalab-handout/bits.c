@@ -207,7 +207,7 @@ int negate(int x)
 int isAsciiDigit(int x)
 {
   int high = (!(x >> 6)) & !((x >> 4) ^ 3);
-  int eight=!(x & 0x8);
+  int eight = !(x & 0x8);
   int low1 = !eight & !(x & 0x6);
   return high & (low1 | eight);
 }
@@ -237,7 +237,15 @@ int conditional(int x, int y, int z)
  */
 int isLessOrEqual(int x, int y)
 {
-  return 2;
+  int neg_x = ~x + 1;
+  int sig_mask = 1 << 31;
+  int sig_x = x & sig_mask;
+  int sig_y = y & sig_mask;
+  int sig_res = (sig_x ^ sig_y);
+  int sig_judge = (sig_res & sig_x);
+  int minus_res = (y + neg_x) & sig_mask;
+  int minus_judge = (~minus_res) & (~sig_res) & sig_mask;
+  return !!(sig_judge | minus_judge);
 }
 //4
 /* 
