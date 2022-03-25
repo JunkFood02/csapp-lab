@@ -280,7 +280,31 @@ int logicalNeg(int x)
  */
 int howManyBits(int x)
 {
-  return 0;
+  int temp = x;
+  int Positive = !(x & (1 << 31));
+  int mask = Positive;
+  int HasBit16, HasBit8, HasBit4, HasBit2, HasBit1, HasBit0;
+  mask = mask << 1 | mask;
+  mask = mask << 2 | mask;
+  mask = mask << 4 | mask;
+  mask = mask << 8 | mask;
+  mask = mask << 16 | mask;
+  x = ((~x + 1) & ~mask) | (mask & x);
+  printf("x=%d,", x);
+  HasBit16 = !!(x >> 16) << 4;
+  x = x >> HasBit16;
+  HasBit8 = !!(x >> 8) << 3;
+  x = x >> HasBit8;
+  HasBit4 = !!(x >> 4) << 2;
+  x = x >> HasBit4;
+  HasBit2 = !!(x >> 2) << 1;
+  x = x >> HasBit2;
+  HasBit1 = !!(x >> 1);
+  x >>= HasBit1;
+  HasBit0 = x & 1;
+
+  printf("temp=%d %d %d %d %d %d %d \n", temp, HasBit16, HasBit8, HasBit4, HasBit2, HasBit1, HasBit0);
+  return HasBit16 + HasBit8 + HasBit4 + HasBit2 + HasBit1 + HasBit0 + Positive;
 }
 //float
 /* 
