@@ -289,8 +289,8 @@ int howManyBits(int x)
   mask = mask << 4 | mask;
   mask = mask << 8 | mask;
   mask = mask << 16 | mask;
-  x = ((~x + 1) & ~mask) | (mask & x);
-  printf("x=%d,", x);
+  x = ((~x) & ~mask) | (mask & x);
+  Positive = (!(x & (1 << 31)));
   HasBit16 = !!(x >> 16) << 4;
   x = x >> HasBit16;
   HasBit8 = !!(x >> 8) << 3;
@@ -300,10 +300,8 @@ int howManyBits(int x)
   HasBit2 = !!(x >> 2) << 1;
   x = x >> HasBit2;
   HasBit1 = !!(x >> 1);
-  x >>= HasBit1;
-  HasBit0 = x & 1;
-
-  printf("temp=%d %d %d %d %d %d %d \n", temp, HasBit16, HasBit8, HasBit4, HasBit2, HasBit1, HasBit0);
+  x = x >> HasBit1;
+  HasBit0 = !!x;
   return HasBit16 + HasBit8 + HasBit4 + HasBit2 + HasBit1 + HasBit0 + Positive;
 }
 //float
