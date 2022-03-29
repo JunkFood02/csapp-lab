@@ -280,7 +280,6 @@ int logicalNeg(int x)
  */
 int howManyBits(int x)
 {
-  int temp = x;
   int Positive = !(x & (1 << 31));
   int mask = Positive;
   int HasBit16, HasBit8, HasBit4, HasBit2, HasBit1, HasBit0;
@@ -318,7 +317,18 @@ int howManyBits(int x)
  */
 unsigned floatScale2(unsigned uf)
 {
-  return 2;
+  int inf = -1 << 24;
+  int sig = (-1 << 31) & uf;
+  unsigned exp = inf & (uf << 1);
+  unsigned frac = ((-1 << 9) & (uf << 9)) >> 9;
+  if (exp == inf)
+    return uf;
+  if (exp == 0)
+  {
+    return (uf << 1) | sig;
+  }
+  exp = ((exp >> 24) + 1) << 23;
+  return sig | exp | frac;
 }
 /* 
  * floatFloat2Int - Return bit-level equivalent of expression (int) f
@@ -334,6 +344,12 @@ unsigned floatScale2(unsigned uf)
  */
 int floatFloat2Int(unsigned uf)
 {
+  int inf = -1 << 24;
+  int sig = (-1 << 31) & uf;
+  unsigned exp = (inf & (uf << 1))>>24;
+  unsigned frac = ((-1 << 9) & (uf << 9)) >> 9;
+
+
   return 2;
 }
 /* 
