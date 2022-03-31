@@ -346,11 +346,25 @@ int floatFloat2Int(unsigned uf)
 {
   int inf = -1 << 24;
   int sig = (-1 << 31) & uf;
-  unsigned exp = (inf & (uf << 1))>>24;
+  unsigned exp = (inf & (uf << 1));
   unsigned frac = ((-1 << 9) & (uf << 9)) >> 9;
+  int ans;
+  printf("uf=%u,frac=%u\n", uf, frac);
+  if (exp == 0)
+    return 0;
+  if (exp == (inf<<1))
+    return inf << 7;
+  exp = exp >> 30;
+  printf("exp=%u\n", exp);
 
+  if (!exp)
+    return 0;
+  ans = frac * (exp);
+  if (sig)
+    ans = -ans;
+  return ans;
 
-  return 2;
+  ;
 }
 /* 
  * floatPower2 - Return bit-level equivalent of the expression 2.0^x
