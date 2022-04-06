@@ -363,7 +363,7 @@ int floatFloat2Int(unsigned uf)
   {
     return 0;
   }
-  ans = (frac >> 23) << (exp-bias);
+  ans = (frac >> 23) << (exp - bias);
   if (sig)
     ans = -ans;
   return ans;
@@ -383,7 +383,11 @@ int floatFloat2Int(unsigned uf)
  */
 unsigned floatPower2(int x)
 {
-  return 2;
+  if (x > 127)
+    return 0x7f800000;
+  if (x < -126)
+    return 0;
+  return (x + 127) << 23;
 } /*
 int main()
 {
