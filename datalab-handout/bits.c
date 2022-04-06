@@ -344,27 +344,29 @@ unsigned floatScale2(unsigned uf)
  */
 int floatFloat2Int(unsigned uf)
 {
-  int inf = -1 << 24;
-  int sig = (-1 << 31) & uf;
-  unsigned exp = (inf & (uf << 1));
+  unsigned inf = -1 << 23;
+  unsigned sig = (-1 << 31) & uf;
+  unsigned exp = (inf & uf) << 1;
   unsigned frac = ((-1 << 9) & (uf << 9)) >> 9;
   int ans;
-  printf("uf=%u,frac=%u\n", uf, frac);
-  if (exp == 0)
+  int bias = 127;
+  //printf("uf=%u\n", uf);
+  exp = exp >> 24;
+  frac = frac | (1 << 23);
+  //printf("frac=%u,exp=%d\n", frac, exp);
+  //printf("%d %d\n", exp - 31 - bias, exp > bias + 31);
+  if (exp > bias + 31)
+  {
+    return 0x80000000;
+  }
+  if (exp < bias)
+  {
     return 0;
-  if (exp == (inf<<1))
-    return inf << 7;
-  exp = exp >> 30;
-  printf("exp=%u\n", exp);
-
-  if (!exp)
-    return 0;
-  ans = frac * (exp);
+  }
+  ans = (frac >> 23) << (exp-bias);
   if (sig)
     ans = -ans;
   return ans;
-
-  ;
 }
 /* 
  * floatPower2 - Return bit-level equivalent of the expression 2.0^x
